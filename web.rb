@@ -8,6 +8,7 @@ require 'twitter_oauth'
 require 'json'
 
 get '/' do
+  response.headers['Access-Control-Allow-Origin'] = '*'
   @client = TwitterOAuth::Client.new(
       :consumer_key => "Xan9gfeLPqIkRNPKbSqYtA",
       :consumer_secret => "n9qwb5QHDWJc5TXM0JN0fjgj7gNK3trjpf5cZFqmL0",

@@ -11,6 +11,8 @@
     <file path="/Gemfile" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371089738399" ignored="false" />
     <file path="/config.yml" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371093877635" ignored="false" />
     <file path="$USER_HOME$/.rvm/gems/ruby-1.9.3-p374/gems/json-1.8.0/lib/json/common.rb" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371095981260" ignored="false" />
+    <file path="$USER_HOME$/osdd/osdd.js" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371143193656" ignored="false" />
+    <file path="/osdd.js" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371142651073" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,7 +37,7 @@
           <file leaf-file-name="web.rb" pinned="false" current="true" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/web.rb">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="4" column="18" selection-start="60" selection-end="60" vertical-scroll-proportion="0.058778036">
+                <state line="22" column="3" selection-start="609" selection-end="609" vertical-scroll-proportion="0.3232792">
                   <folding />
                 </state>
               </provider>
@@ -571,7 +573,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/web.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="18" selection-start="60" selection-end="60" vertical-scroll-proportion="0.058778036">
+        <state line="22" column="3" selection-start="609" selection-end="609" vertical-scroll-proportion="0.3232792">
           <folding />
         </state>
       </provider>
