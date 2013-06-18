@@ -6,7 +6,7 @@ require 'rubygems'
 require 'sinatra'
 require 'twitter_oauth'
 require 'sinatra/jsonp'
-#require 'json'
+require 'json'
 
 get '/' do
   response.headers['Access-Control-Allow-Origin'] = '*'

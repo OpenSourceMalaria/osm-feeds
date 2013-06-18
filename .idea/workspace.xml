@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c5d35459-4628-46a9-921e-307daa6aa6cd" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Gemfile.lock" afterPath="$PROJECT_DIR$/Gemfile.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Gemfile" afterPath="$PROJECT_DIR$/Gemfile" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web.rb" afterPath="$PROJECT_DIR$/web.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="osm-twitter.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -15,12 +12,12 @@
     <file path="/config.yml" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371093877635" ignored="false" />
     <file path="$USER_HOME$/.rvm/gems/ruby-1.9.3-p374/gems/json-1.8.0/lib/json/common.rb" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371095981260" ignored="false" />
     <file path="$USER_HOME$/osdd/osdd.js" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371143464342" ignored="false" />
-    <file path="/osdd.js" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371163842075" ignored="false" />
+    <file path="/osdd.js" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371583316506" ignored="false" />
     <file path="$USER_HOME$/osdd/views/osdd.html" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371161402426" ignored="false" />
     <file path="$USER_HOME$/osdd/views/index.html" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371157898978" ignored="false" />
     <file path="$USER_HOME$/osdd/views/join.html" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371157647111" ignored="false" />
     <file path="$USER_HOME$/osdd/views/MeetTheTeam.html" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371161402426" ignored="false" />
-    <file path="/a.dummy" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371161437471" ignored="false" />
+    <file path="/a.dummy" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371583529898" ignored="false" />
     <file path="$USER_HOME$/osdd/views/base.html" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371145847224" ignored="false" />
     <file path="$USER_HOME$/osdd/views/single.html" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371157647111" ignored="false" />
     <file path="/single.html" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371160697148" ignored="false" />
@@ -31,6 +28,7 @@
     <file path="$USER_HOME$/osdd/index.html" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371161402426" ignored="false" />
     <file path="/index.html" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371160298816" ignored="false" />
     <file path="$USER_HOME$/osm_website_code/.gitignore" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371582524654" ignored="false" />
+    <file path="$USER_HOME$/osm_website_code/javascript/osdd.js" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371583323042" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,13 +47,13 @@
     <favorites_list name="osm-twitter" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.43626207">
+    <splitter split-orientation="horizontal" split-proportion="0.76441103">
       <split-first>
         <leaf>
           <file leaf-file-name="web.rb" pinned="false" current="true" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/web.rb">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="24" column="3" selection-start="652" selection-end="652" vertical-scroll-proportion="0.35625">
+                <state line="24" column="3" selection-start="651" selection-end="651" vertical-scroll-proportion="0.35266823">
                   <folding />
                 </state>
               </provider>
@@ -64,7 +62,7 @@
           <file leaf-file-name="timeline.rb" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$USER_HOME$/.rvm/gems/ruby-1.9.3-p374/gems/twitter_oauth-0.4.91/lib/twitter_oauth/timeline.rb">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="12" column="53" selection-start="564" selection-end="564" vertical-scroll-proportion="0.0">
+                <state line="2" column="4" selection-start="39" selection-end="39" vertical-scroll-proportion="0.0">
                   <folding />
                 </state>
               </provider>
@@ -179,32 +177,6 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="twitter_oauth (v0.4.91, RVM: ruby-1.9.3-p374) [gem]" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lib" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="osm-twitter" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="twitter_oauth (v0.4.91, RVM: ruby-1.9.3-p374) [gem]" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lib" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="twitter_oauth" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -613,14 +585,14 @@
     </entry>
     <entry file="file://$USER_HOME$/.rvm/gems/ruby-1.9.3-p374/gems/twitter_oauth-0.4.91/lib/twitter_oauth/timeline.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="53" selection-start="564" selection-end="564" vertical-scroll-proportion="0.0">
+        <state line="2" column="4" selection-start="39" selection-end="39" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/web.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="3" selection-start="652" selection-end="652" vertical-scroll-proportion="0.35625">
+        <state line="24" column="3" selection-start="651" selection-end="651" vertical-scroll-proportion="0.35266823">
           <folding />
         </state>
       </provider>
