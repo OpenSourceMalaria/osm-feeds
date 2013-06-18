@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c5d35459-4628-46a9-921e-307daa6aa6cd" name="Default" comment="" />
+    <list default="true" id="c5d35459-4628-46a9-921e-307daa6aa6cd" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Gemfile" afterPath="$PROJECT_DIR$/Gemfile" />
+    </list>
     <ignored path="osm-twitter.iws" />
     <ignored path=".idea/workspace.xml" />
     <file path="/Dummy.txt" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371586021772" ignored="false" />
     <file path="/web.rb" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371598489428" ignored="false" />
-    <file path="/Gemfile" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371089738399" ignored="false" />
+    <file path="/Gemfile" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371599501119" ignored="false" />
     <file path="/config.yml" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371093877635" ignored="false" />
     <file path="$USER_HOME$/.rvm/gems/ruby-1.9.3-p374/gems/json-1.8.0/lib/json/common.rb" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371095981260" ignored="false" />
     <file path="$USER_HOME$/osdd/osdd.js" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371143464342" ignored="false" />
@@ -28,7 +30,7 @@
     <file path="$USER_HOME$/osm_website_code/.gitignore" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371582524654" ignored="false" />
     <file path="$USER_HOME$/osm_website_code/javascript/osdd.js" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371598622821" ignored="false" />
     <file path="$USER_HOME$/osm_website_code/index.html" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371597777107" ignored="false" />
-    <file path="$PROJECT_DIR$/.idea/workspace.xml" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371599131873" ignored="false" />
+    <file path="$PROJECT_DIR$/.idea/workspace.xml" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371599523243" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,10 +52,10 @@
     <splitter split-orientation="horizontal" split-proportion="0.76441103">
       <split-first>
         <leaf>
-          <file leaf-file-name="web.rb" pinned="false" current="true" current-in-tab="true">
+          <file leaf-file-name="web.rb" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/web.rb">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="10" column="0" selection-start="161" selection-end="161" vertical-scroll-proportion="0.14694509">
+                <state line="10" column="0" selection-start="161" selection-end="161" vertical-scroll-proportion="0.0">
                   <folding />
                 </state>
               </provider>
@@ -68,10 +70,10 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="Gemfile" pinned="false" current="false" current-in-tab="false">
+          <file leaf-file-name="Gemfile" pinned="false" current="true" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/Gemfile">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="4" column="17" selection-start="101" selection-end="101" vertical-scroll-proportion="0.0">
+                <state line="6" column="0" selection-start="121" selection-end="121" vertical-scroll-proportion="0.08816706">
                   <folding />
                 </state>
               </provider>
@@ -125,8 +127,8 @@
         <option value="$PROJECT_DIR$/junk.json" />
         <option value="$PROJECT_DIR$/junk.js" />
         <option value="$PROJECT_DIR$/junk.txt" />
-        <option value="$PROJECT_DIR$/Gemfile" />
         <option value="$PROJECT_DIR$/web.rb" />
+        <option value="$PROJECT_DIR$/Gemfile" />
       </list>
     </option>
   </component>
@@ -554,13 +556,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Gemfile">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="17" selection-start="101" selection-end="101" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/.rvm/gems/ruby-1.9.3-p374/gems/twitter_oauth-0.4.91/lib/twitter_oauth/timeline.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="18" selection-start="18" selection-end="18" vertical-scroll-proportion="0.0">
@@ -577,7 +572,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/web.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="0" selection-start="161" selection-end="161" vertical-scroll-proportion="0.14694509">
+        <state line="10" column="0" selection-start="161" selection-end="161" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Gemfile">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="0" selection-start="121" selection-end="121" vertical-scroll-proportion="0.08816706">
           <folding />
         </state>
       </provider>
