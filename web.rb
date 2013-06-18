@@ -5,7 +5,8 @@
 require 'rubygems'
 require 'sinatra'
 require 'twitter_oauth'
-require 'json'
+require 'sinatra/jsonp'
+#require 'json'
 
 get '/' do
   response.headers['Access-Control-Allow-Origin'] = '*'
@@ -18,6 +19,7 @@ get '/' do
 
   @tweets = @client.user_timeline( { :screen_name => 'OSDDMalaria' } )
 
-  content_type :json
-  { :tweets => @tweets }.to_json
+  jsonp @tweets
+  #content_type :json
+  #{ :tweets => @tweets }.to_json
 end
