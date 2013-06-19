@@ -34,7 +34,7 @@ get '/sponsors_and_members' do
   response.headers['Access-Control-Allow-Origin'] = '*'
 
   members_file = "/tmp/members.json"
-  if File.exist?(member_file)
+  if File.exist?(members_file)
     logger.debug "Members file already exists"
     logger.debug "With mtime of " + File.mtime(members_file) + "ten minutes ago of " +  (Time.now - 10*60)
   end
