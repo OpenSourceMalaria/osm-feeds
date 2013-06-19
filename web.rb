@@ -8,6 +8,13 @@ require 'twitter_oauth'
 require 'sinatra/jsonp'
 require 'json'
 require 'open-uri'
+require 'logger'
+
+enable :logging
+
+before do
+  logger.level = Logger::DEBUG
+end
 
 get '/' do
   response.headers['Access-Control-Allow-Origin'] = '*'
@@ -30,10 +37,15 @@ get '/sponsors_and_members' do
 
   members_file = "/tmp/members.json"
   if File.exist?(members_file) && File.mtime(members_file) > (Time.now - 10*60)
+    logger.debug "First"
+    logger.debug File.read(members_file)
     @members = JSON.parse(File.read(members_file))
+
   else
     @members = open("https://api.github.com/repos/OSDDMalaria/OSM_Website_Data/issues").read
     result = JSON.parse(@members)
+    logger.debug "Second"
+    logger.debug result
     File.write(members_file, result)
   end
 
