@@ -30,11 +30,13 @@ get '/sponsors_and_members' do
 
   members_file = "/tmp/members.json"
   if File.exist?(members_file) && File.mtime(members_file) > (Time.now - 10*60)
-    @members = File.read(members_file)
+    @members = JSON.parse(File.read(members_file))
   else
     @members = open("https://api.github.com/repos/OSDDMalaria/OSM_Website_Data/issues").read
-    File.write(members_file, @members)
+    result = JSON.parse(@members)
+    File.write(members_file, result)
   end
+
   jsonp @members
 end
 
