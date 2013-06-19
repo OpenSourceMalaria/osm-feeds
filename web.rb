@@ -42,7 +42,7 @@ get '/sponsors_and_members' do
     @members = JSON.parse(File.read(members_file))
 
   else
-    @members = open("https://api.github.com/repos/OSDDMalaria/OSM_Website_Data/issues").read
+    @members = open("https://api.github.com/repos/OSDDMalaria/OSM_Website_Data/issues", "UserAgent" => "Ruby-Wget").read
     result = JSON.parse(@members)
     logger.debug "Second"
     logger.debug result
@@ -59,7 +59,7 @@ get '/project_activity' do
   if File.exist?(project_activity_file) && File.mtime(project_activity_file) > (Time.now - 10*60)
     @project_activity = File.read(project_activity_file)
   else
-    @project_activity = open("https://api.github.com/repos/OSDDMalaria/OSDDMalaria_To_Do_List/issues").read
+    @project_activity = open("https://api.github.com/repos/OSDDMalaria/OSDDMalaria_To_Do_List/issues", "UserAgent" => "Ruby-Wget").read
     File.write(project_activity_file, @project_activity)
   end
   jsonp @project_activity
