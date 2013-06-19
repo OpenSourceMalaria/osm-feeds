@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="c5d35459-4628-46a9-921e-307daa6aa6cd" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Gemfile" afterPath="$PROJECT_DIR$/Gemfile" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="osm-twitter.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -30,7 +31,6 @@
     <file path="$USER_HOME$/osm_website_code/.gitignore" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371582524654" ignored="false" />
     <file path="$USER_HOME$/osm_website_code/javascript/osdd.js" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371598622821" ignored="false" />
     <file path="$USER_HOME$/osm_website_code/index.html" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371597777107" ignored="false" />
-    <file path="$PROJECT_DIR$/.idea/workspace.xml" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371599523243" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,7 +73,7 @@
           <file leaf-file-name="Gemfile" pinned="false" current="true" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/Gemfile">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="6" column="0" selection-start="121" selection-end="121" vertical-scroll-proportion="0.08816706">
+                <state line="6" column="0" selection-start="115" selection-end="115" vertical-scroll-proportion="0.08816706">
                   <folding />
                 </state>
               </provider>
@@ -579,7 +579,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Gemfile">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="0" selection-start="121" selection-end="121" vertical-scroll-proportion="0.08816706">
+        <state line="6" column="0" selection-start="115" selection-end="115" vertical-scroll-proportion="0.08816706">
           <folding />
         </state>
       </provider>
