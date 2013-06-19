@@ -36,7 +36,7 @@ get '/sponsors_and_members' do
   members_file = "/tmp/members.json"
   if File.exist?(members_file)
     logger.debug "Members file already exists"
-    logger.debug "With mtime of " + File.mtime(members_file) + "ten minutes ago of " +  (Time.now - 10*60)
+    logger.debug "With mtime of " + File.mtime(members_file).to_s + "ten minutes ago of " +  (Time.now - 10*60).to_s
   end
 
   if File.exist?(members_file) && File.mtime(members_file) > (Time.now - 10*60)
