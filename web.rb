@@ -34,19 +34,11 @@ get '/sponsors_and_members' do
   response.headers['Access-Control-Allow-Origin'] = '*'
 
   members_file = "/tmp/members.json"
-  if File.exist?(members_file)
-    logger.debug "Members file already exists"
-    logger.debug "With mtime of " + File.mtime(members_file).to_s + "ten minutes ago of " +  (Time.now - 10*60).to_s
-  end
 
   if File.exist?(members_file) && File.mtime(members_file) > (Time.now - 10*60)
-    logger.debug "First"
-    logger.debug File.read(members_file)
     @members = File.read(members_file)
   else
     @members = open("https://api.github.com/repos/OSDDMalaria/OSM_Website_Data/issues", "UserAgent" => "Ruby-Wget").read
-    logger.debug "Hitting the members endpoint in github  ***************************************************"
-    logger.debug @members
     File.write(members_file, @members)
   end
 
