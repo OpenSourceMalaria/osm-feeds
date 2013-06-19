@@ -39,15 +39,12 @@ get '/sponsors_and_members' do
   if File.exist?(members_file) && File.mtime(members_file) > (Time.now - 10*60)
     logger.debug "First"
     logger.debug File.read(members_file)
-    @members = JSON.parse(File.read(members_file))
+    @members = File.read(members_file)
   else
     @members = open("https://api.github.com/repos/OSDDMalaria/OSM_Website_Data/issues", "UserAgent" => "Ruby-Wget").read
-    result = JSON.parse(@members)
     logger.debug "Second ***************************************************"
     logger.debug @members
-    logger.debug "Third"
-    logger.debug result
-    File.write(members_file, result)
+    File.write(members_file, @members)
   end
 
   @members

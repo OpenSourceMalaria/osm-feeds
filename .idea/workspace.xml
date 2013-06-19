@@ -12,7 +12,7 @@
     <file path="/config.yml" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371093877635" ignored="false" />
     <file path="$USER_HOME$/.rvm/gems/ruby-1.9.3-p374/gems/json-1.8.0/lib/json/common.rb" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371095981260" ignored="false" />
     <file path="$USER_HOME$/osdd/osdd.js" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371143464342" ignored="false" />
-    <file path="/osdd.js" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371610381039" ignored="false" />
+    <file path="/osdd.js" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371655566962" ignored="false" />
     <file path="$USER_HOME$/osdd/views/osdd.html" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371161402426" ignored="false" />
     <file path="$USER_HOME$/osdd/views/index.html" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371157898978" ignored="false" />
     <file path="$USER_HOME$/osdd/views/join.html" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371157647111" ignored="false" />
@@ -28,10 +28,10 @@
     <file path="$USER_HOME$/osdd/index.html" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371161402426" ignored="false" />
     <file path="/index.html" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371597773037" ignored="false" />
     <file path="$USER_HOME$/osm_website_code/.gitignore" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371582524654" ignored="false" />
-    <file path="$USER_HOME$/osm_website_code/javascript/osdd.js" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371613264349" ignored="false" />
+    <file path="$USER_HOME$/osm_website_code/javascript/osdd.js" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371655868404" ignored="false" />
     <file path="$USER_HOME$/osm_website_code/index.html" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371597777107" ignored="false" />
     <file path="$USER_HOME$/osm_website_code/JUNK" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371610261720" ignored="false" />
-    <file path="$PROJECT_DIR$/.idea/workspace.xml" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371655136642" ignored="false" />
+    <file path="$PROJECT_DIR$/.idea/workspace.xml" changelist="c5d35459-4628-46a9-921e-307daa6aa6cd" time="1371655961310" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,7 +56,7 @@
           <file leaf-file-name="web.rb" pinned="false" current="true" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/web.rb">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="65" column="2" selection-start="1951" selection-end="1951" vertical-scroll-proportion="0.8677494">
+                <state line="48" column="0" selection-start="1339" selection-end="1339" vertical-scroll-proportion="0.6620263">
                   <folding />
                 </state>
               </provider>
@@ -96,7 +96,7 @@
           <file leaf-file-name="config.yml" pinned="false" current="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/config.yml">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="3" column="16" selection-start="184" selection-end="184" vertical-scroll-proportion="0.04453125">
+                <state line="3" column="22" selection-start="190" selection-end="190" vertical-scroll-proportion="0.04453125">
                   <folding />
                 </state>
               </provider>
@@ -551,13 +551,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/config.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="16" selection-start="184" selection-end="184" vertical-scroll-proportion="0.04453125">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Gemfile">
       <provider selected="true" editor-type-id="text-editor">
         <state line="6" column="0" selection-start="115" selection-end="115" vertical-scroll-proportion="0.0">
@@ -572,9 +565,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/config.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="22" selection-start="190" selection-end="190" vertical-scroll-proportion="0.04453125">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/web.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="65" column="2" selection-start="1951" selection-end="1951" vertical-scroll-proportion="0.8677494">
+        <state line="48" column="0" selection-start="1339" selection-end="1339" vertical-scroll-proportion="0.6620263">
           <folding />
         </state>
       </provider>
