@@ -40,16 +40,17 @@ get '/sponsors_and_members' do
     logger.debug "First"
     logger.debug File.read(members_file)
     @members = JSON.parse(File.read(members_file))
-
   else
     @members = open("https://api.github.com/repos/OSDDMalaria/OSM_Website_Data/issues", "UserAgent" => "Ruby-Wget").read
     result = JSON.parse(@members)
-    logger.debug "Second"
+    logger.debug "Second ***************************************************"
+    logger.debug @members
+    logger.debug "Third"
     logger.debug result
     File.write(members_file, result)
   end
 
-  jsonp @members
+  @members
 end
 
 get '/project_activity' do
@@ -62,6 +63,6 @@ get '/project_activity' do
     @project_activity = open("https://api.github.com/repos/OSDDMalaria/OSDDMalaria_To_Do_List/issues", "UserAgent" => "Ruby-Wget").read
     File.write(project_activity_file, @project_activity)
   end
-  jsonp @project_activity
+  @project_activity
 end
 
