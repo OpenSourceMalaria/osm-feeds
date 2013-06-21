@@ -57,6 +57,8 @@ get '/project_activity' do
     @project_activity = open("https://api.github.com/repos/OSDDMalaria/OSDDMalaria_To_Do_List/issues", "UserAgent" => "Ruby-Wget").read
     logger.debug "*************************************************************"
     logger.debug  @project_activity
+    logger.debug "++++++++++++++++++++++++++++"
+    logger.debug @project_activity[0].updated_at
     File.write(project_activity_file, @project_activity)
   end
   @project_activity
