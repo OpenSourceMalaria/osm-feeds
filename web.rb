@@ -40,8 +40,12 @@ get '/sponsors_and_members' do
 
   if File.exist?(members_file) && File.mtime(members_file) > (Time.now - 10*60)
     @members = File.read(members_file)
+    puts "File read class"
+    puts @members.class
   else
     @members = open("https://api.github.com/repos/OSDDMalaria/OSM_Website_Data/issues", "UserAgent" => "Ruby-Wget").read
+    puts "Website read class"
+    puts @members.class
     File.write(members_file, @members)
   end
   puts @members
