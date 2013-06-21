@@ -100,6 +100,19 @@ get '/project_activity' do
   s
 end
 
+get '/project_activity_old' do
+  response.headers['Access-Control-Allow-Origin'] = '*'
+
+  project_activity_file = "/tmp/project_activity.json"
+  if File.exist?(project_activity_file) && File.mtime(project_activity_file) > (Time.now - 10*60)
+    @project_activity = File.read(project_activity_file)
+  else
+    @project_activity = open("https://api.github.com/repos/OSDDMalaria/OSDDMalaria_To_Do_List/issues", "UserAgent" => "Ruby-Wget").read
+    File.write(project_activity_file, @project_activity)
+  end
+  @project_activity
+end
+
 get '/reset' do
   response.headers['Access-Control-Allow-Origin'] = '*'
 
