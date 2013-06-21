@@ -58,3 +58,21 @@ get '/project_activity' do
   @project_activity
 end
 
+get '/reset' do
+  response.headers['Access-Control-Allow-Origin'] = '*'
+
+  project_activity_file = "/tmp/project_activity.json"
+  members_file = "/tmp/members.json"
+
+  if File.exist?(project_activity_file)
+    File.delete(project_activity_file)
+  end
+
+  if File.exist?(members_file)
+    File.delete(members_file)
+  end
+
+  "Data reset complete"
+
+end
+
