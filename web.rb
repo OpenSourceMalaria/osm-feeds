@@ -13,7 +13,10 @@ require 'logger'
 enable :logging
 
 before do
-  logger.level = Logger::DEBUG
+  Dir.mkdir('logs') unless File.exist?('logs')
+  $log = Logger.new('logs/output.log','weekly')
+
+  $log.level = Logger::DEBUG
 end
 
 get '/' do
@@ -46,22 +49,51 @@ get '/sponsors_and_members' do
 end
 
 get '/project_activity' do
+
+  @combined = Array.new
+
   response.headers['Access-Control-Allow-Origin'] = '*'
 
   project_activity_file = "/tmp/project_activity.json"
   if File.exist?(project_activity_file) && File.mtime(project_activity_file) > (Time.now - 10*60)
     @project_activity = File.read(project_activity_file)
-    logger.debug "-------------------------------------------------------------------------------------------------"
-    logger.debug @project_activity
+    s = @project_activity
   else
-    @project_activity = open("https://api.github.com/repos/OSDDMalaria/OSDDMalaria_To_Do_List/issues", "UserAgent" => "Ruby-Wget").read
-    logger.debug "*************************************************************"
-    logger.debug  @project_activity
-    logger.debug "++++++++++++++++++++++++++++"
-    logger.debug @project_activity[0]["updated_at"]
-    File.write(project_activity_file, @project_activity)
+    @open_project_activity = open("https://api.github.com/repos/OSDDMalaria/OSDDMalaria_To_Do_List/issues", "UserAgent" => "Ruby-Wget").read
+    puts "from the website open"
+    puts @open_project_activity
+    @closed_project_activity = open("https://api.github.com/repos/OSDDMalaria/OSDDMalaria_To_Do_List/issues?state=closed", "UserAgent" => "Ruby-Wget").read
+
+    open_as_json = JSON.parse(@open_project_activity)
+    closed_as_json = JSON.parse(@closed_project_activity)
+    puts "+++++++++++"
+    puts open_as_json.count
+    puts closed_as_json.count
+
+    for i in 0..6
+      @combined.push(closed_as_json[i])
+      @combined.push(open_as_json[i])
+    end
+
+    s = String.new
+    s << "["
+    for i in 0..12
+      s << @combined[i].to_s
+      s << ","
+    end
+    s << @combined[13].to_s
+    s << "]"
+    puts "s is"
+    puts s
+
+    File.write(project_activity_file,s)
+    puts "combined array ====="
+    puts @combined
+    puts @combined.count()
   end
-  @project_activity
+
+  puts s
+  s
 end
 
 get '/reset' do
