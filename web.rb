@@ -58,7 +58,7 @@ get '/project_activity' do
     logger.debug "*************************************************************"
     logger.debug  @project_activity
     logger.debug "++++++++++++++++++++++++++++"
-    logger.debug @project_activity[0].updated_at
+    logger.debug @project_activity[0]["updated_at"]
     File.write(project_activity_file, @project_activity)
   end
   @project_activity
