@@ -44,7 +44,7 @@ get '/sponsors_and_members' do
     @members = open("https://api.github.com/repos/OSDDMalaria/OSM_Website_Data/issues", "UserAgent" => "Ruby-Wget").read
     File.write(members_file, @members)
   end
-
+  puts @members
   @members
 end
 
@@ -57,11 +57,20 @@ get '/project_activity' do
   project_activity_file = "/tmp/project_activity.json"
   if File.exist?(project_activity_file) && File.mtime(project_activity_file) > (Time.now - 10*60)
     s = File.read(project_activity_file)
+    puts "From the file"
+    puts s
+    s
   else
     @open_project_activity = open("https://api.github.com/repos/OSDDMalaria/OSDDMalaria_To_Do_List/issues", "UserAgent" => "Ruby-Wget").read
     @closed_project_activity = open("https://api.github.com/repos/OSDDMalaria/OSDDMalaria_To_Do_List/issues?state=closed", "UserAgent" => "Ruby-Wget").read
 
+    puts "from thewebsite"
+    puts @open_project_activity
+
     open_as_json = JSON.parse(@open_project_activity)
+    puts "after jsonizing"
+    puts open_as_json
+
     closed_as_json = JSON.parse(@closed_project_activity)
 
     for i in 0..6
@@ -78,9 +87,13 @@ get '/project_activity' do
     s << @combined[13].to_s
     s << "]"
 
+    puts "after concatenating as a string"
+    puts s
+
     File.write(project_activity_file,s)
     s
   end
+  s
 end
 
 get '/reset' do
