@@ -40,30 +40,25 @@ get '/sponsors_and_members' do
 
   if File.exist?(members_file) && File.mtime(members_file) > (Time.now - 10*60)
     @members = File.read(members_file)
-    puts "File read class"
-    puts @members.class
   else
     @members = open("https://api.github.com/repos/OSDDMalaria/OSM_Website_Data/issues", "UserAgent" => "Ruby-Wget").read
-    puts "Website read class"
-    puts @members.class
     File.write(members_file, @members)
   end
-  puts @members
   @members
 end
 
-get '/project_activity' do
+get '/project_activity_combined' do
 
   @combined = Array.new
+  @s = String.new
 
   response.headers['Access-Control-Allow-Origin'] = '*'
 
   project_activity_file = "/tmp/project_activity.json"
   if File.exist?(project_activity_file) && File.mtime(project_activity_file) > (Time.now - 10*60)
-    s = File.read(project_activity_file)
+    @s = File.read(project_activity_file)
     puts "From the file"
-    puts s
-    s
+    puts @s
   else
     @open_project_activity = open("https://api.github.com/repos/OSDDMalaria/OSDDMalaria_To_Do_List/issues", "UserAgent" => "Ruby-Wget").read
     @closed_project_activity = open("https://api.github.com/repos/OSDDMalaria/OSDDMalaria_To_Do_List/issues?state=closed", "UserAgent" => "Ruby-Wget").read
@@ -82,25 +77,24 @@ get '/project_activity' do
       @combined.push(open_as_json[i])
     end
 
-    s = String.new
-    s << "["
+    @s = String.new
+    @s << "["
     for i in 0..12
-      s << @combined[i].to_s
-      s << ","
+      @s << @combined[i].to_s
+      @s << ","
     end
-    s << @combined[13].to_s
-    s << "]"
+    @s << @combined[13].to_s
+    @s << "]"
 
     puts "after concatenating as a string"
-    puts s
+    puts @s
 
-    File.write(project_activity_file,s)
-    s
+    File.write(project_activity_file,@s)
   end
-  s
+  @s
 end
 
-get '/project_activity_old' do
+get '/project_activity' do
   response.headers['Access-Control-Allow-Origin'] = '*'
 
   project_activity_file = "/tmp/project_activity.json"
