@@ -57,8 +57,6 @@ get '/project_activity_combined' do
   project_activity_file = "/tmp/project_activity.json"
   if File.exist?(project_activity_file) && File.mtime(project_activity_file) > (Time.now - 10*60)
     @s = File.read(project_activity_file)
-    puts "From the file"
-    puts @s
   else
     @open_project_activity = open("https://api.github.com/repos/OSDDMalaria/OSDDMalaria_To_Do_List/issues", "UserAgent" => "Ruby-Wget").read
     @closed_project_activity = open("https://api.github.com/repos/OSDDMalaria/OSDDMalaria_To_Do_List/issues?state=closed", "UserAgent" => "Ruby-Wget").read
@@ -91,7 +89,7 @@ get '/project_activity_combined' do
 
     File.write(project_activity_file,@s)
   end
-  @s
+  jsonp @s
 end
 
 get '/project_activity' do
