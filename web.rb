@@ -56,19 +56,13 @@ get '/project_activity' do
 
   project_activity_file = "/tmp/project_activity.json"
   if File.exist?(project_activity_file) && File.mtime(project_activity_file) > (Time.now - 10*60)
-    @project_activity = File.read(project_activity_file)
-    s = @project_activity
+    s = File.read(project_activity_file)
   else
     @open_project_activity = open("https://api.github.com/repos/OSDDMalaria/OSDDMalaria_To_Do_List/issues", "UserAgent" => "Ruby-Wget").read
-    puts "from the website open"
-    puts @open_project_activity
     @closed_project_activity = open("https://api.github.com/repos/OSDDMalaria/OSDDMalaria_To_Do_List/issues?state=closed", "UserAgent" => "Ruby-Wget").read
 
     open_as_json = JSON.parse(@open_project_activity)
     closed_as_json = JSON.parse(@closed_project_activity)
-    puts "+++++++++++"
-    puts open_as_json.count
-    puts closed_as_json.count
 
     for i in 0..6
       @combined.push(closed_as_json[i])
@@ -83,16 +77,10 @@ get '/project_activity' do
     end
     s << @combined[13].to_s
     s << "]"
-    puts "s is"
-    puts s
 
     File.write(project_activity_file,s)
-    puts "combined array ====="
-    puts @combined
-    puts @combined.count()
+    s
   end
-
-  @combined
 end
 
 get '/reset' do
