@@ -92,8 +92,7 @@ get '/project_activity' do
     puts @combined.count()
   end
 
-  puts s
-  s
+  @combined
 end
 
 get '/reset' do
