@@ -51,8 +51,12 @@ get '/project_activity' do
   project_activity_file = "/tmp/project_activity.json"
   if File.exist?(project_activity_file) && File.mtime(project_activity_file) > (Time.now - 10*60)
     @project_activity = File.read(project_activity_file)
+    logger.debug "-------------------------------------------------------------------------------------------------"
+    logger.debug @project_activity
   else
     @project_activity = open("https://api.github.com/repos/OSDDMalaria/OSDDMalaria_To_Do_List/issues", "UserAgent" => "Ruby-Wget").read
+    logger.debug "*************************************************************"
+    logger.debug  @project_activity
     File.write(project_activity_file, @project_activity)
   end
   @project_activity
