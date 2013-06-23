@@ -15,7 +15,6 @@ enable :logging
 before do
   Dir.mkdir('logs') unless File.exist?('logs')
   $log = Logger.new('logs/output.log','weekly')
-
   $log.level = Logger::DEBUG
 end
 
@@ -62,13 +61,7 @@ get '/project_activity_combined' do
     @open_project_activity = open("https://api.github.com/repos/OSDDMalaria/OSDDMalaria_To_Do_List/issues", "UserAgent" => "Ruby-Wget").read
     @closed_project_activity = open("https://api.github.com/repos/OSDDMalaria/OSDDMalaria_To_Do_List/issues?state=closed", "UserAgent" => "Ruby-Wget").read
 
-    puts "from thewebsite"
-    puts @open_project_activity
-
     open_as_json = JSON.parse(@open_project_activity)
-    puts "after jsonizing"
-    puts open_as_json
-
     closed_as_json = JSON.parse(@closed_project_activity)
 
     for i in 0..6
@@ -81,12 +74,11 @@ get '/project_activity_combined' do
     for i in 0..12
       @s << @combined[i].to_s
       @s << ","
+      $log.debug @s
     end
     @s << @combined[13].to_s
     @s << "]"
-
-    puts "after concatenating as a string"
-    puts @s
+    $log.debug @s
 
     File.write(project_activity_file,@s)
   end
@@ -124,3 +116,16 @@ get '/reset' do
 
 end
 
+get '/project_activity_test' do
+
+  response.headers['Access-Control-Allow-Origin'] = '*'
+
+  @combined = String.new
+  project_activity_file = "/tmp/project_activity.json"
+
+    @open_project_activity = open("https://api.github.com/repos/OSDDMalaria/OSDDMalaria_To_Do_List/issues", "UserAgent" => "Ruby-Wget").read
+    @closed_project_activity = open("https://api.github.com/repos/OSDDMalaria/OSDDMalaria_To_Do_List/issues?state=closed", "UserAgent" => "Ruby-Wget").read
+
+    @combined << @open_project_activity << @closed_project_activity
+
+end
