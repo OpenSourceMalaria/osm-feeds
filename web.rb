@@ -132,5 +132,5 @@ get '/project_activity_test' do
 
     @closed_project_activity[0] = ' '
     @combined << @closed_project_activity
-
+    @combined
 end
