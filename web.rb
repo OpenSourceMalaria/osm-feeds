@@ -126,6 +126,11 @@ get '/project_activity_test' do
     @open_project_activity = open("https://api.github.com/repos/OSDDMalaria/OSDDMalaria_To_Do_List/issues", "UserAgent" => "Ruby-Wget").read
     @closed_project_activity = open("https://api.github.com/repos/OSDDMalaria/OSDDMalaria_To_Do_List/issues?state=closed", "UserAgent" => "Ruby-Wget").read
 
-    @combined << @open_project_activity << @closed_project_activity
+    @combined << @open_project_activity
+    x = @combined.length
+    @combined[x-1] = ','
+
+    @closed_project_activity[0] = ' '
+    @combined << @closed_project_activity
 
 end
