@@ -68,6 +68,7 @@ get '/project_activity' do
 
   response.headers['Access-Control-Allow-Origin'] = '*'
 
+  project_activity_file = "/tmp/project_activity.json"
   if File.exist?(project_activity_file) && File.mtime(project_activity_file) > (Time.now - 10*60)
     @back = File.read(project_activity_file)
   else
