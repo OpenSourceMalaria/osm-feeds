@@ -37,7 +37,7 @@ get '/sponsors_and_members' do
 
   members_file = "/tmp/members.json"
 
-  if File.exist?(members_file) && File.mtime(members_file) > (Time.now - 10*60)
+  if File.exist?(members_file) && File.mtime(members_file) > (Time.now - 60*60)
     @members = File.read(members_file)
   else
     @members = open("https://api.github.com/repos/OSDDMalaria/OSM_Website_Data/issues", "UserAgent" => "Ruby-Wget").read
@@ -69,7 +69,7 @@ get '/project_activity' do
   response.headers['Access-Control-Allow-Origin'] = '*'
 
   project_activity_file = "/tmp/project_activity.json"
-  if File.exist?(project_activity_file) && File.mtime(project_activity_file) > (Time.now - 10*60)
+  if File.exist?(project_activity_file) && File.mtime(project_activity_file) > (Time.now - 60*60)
     @back = File.read(project_activity_file)
   else
     @combined = String.new
