@@ -132,5 +132,18 @@ get '/project_activity_test' do
 
     @closed_project_activity[0] = ' '
     @combined << @closed_project_activity
+
+    as_json = JSON.parse(@combined);
+
+    $log.debug "as_json"
+    $log.debug as_json
+
+    $log.debug as_json.length
+
+    @back = as_json.to_s
+
+
+
     @combined
+    @back
 end
