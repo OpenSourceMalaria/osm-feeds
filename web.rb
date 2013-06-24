@@ -46,58 +46,6 @@ get '/sponsors_and_members' do
   @members
 end
 
-get '/project_activity_combined' do
-
-  response.headers['Access-Control-Allow-Origin'] = '*'
-
-  @combined = Array.new
-  @s = String.new
-
-  project_activity_file = "/tmp/project_activity.json"
-
-  if File.exist?(project_activity_file) && File.mtime(project_activity_file) > (Time.now - 10*60)
-    @s = File.read(project_activity_file)
-  else
-    @open_project_activity = open("https://api.github.com/repos/OSDDMalaria/OSDDMalaria_To_Do_List/issues", "UserAgent" => "Ruby-Wget").read
-    @closed_project_activity = open("https://api.github.com/repos/OSDDMalaria/OSDDMalaria_To_Do_List/issues?state=closed", "UserAgent" => "Ruby-Wget").read
-
-    open_as_json = JSON.parse(@open_project_activity)
-    closed_as_json = JSON.parse(@closed_project_activity)
-
-    for i in 0..6
-      @combined.push(closed_as_json[i])
-      @combined.push(open_as_json[i])
-    end
-
-    @s = String.new
-    @s << "["
-    for i in 0..12
-      @s << @combined[i].to_s
-      @s << ","
-      $log.debug @s
-    end
-    @s << @combined[13].to_s
-    @s << "]"
-    $log.debug @s
-
-    File.write(project_activity_file,@s)
-  end
-  @s
-end
-
-get '/project_activity_old' do
-  response.headers['Access-Control-Allow-Origin'] = '*'
-
-  project_activity_file = "/tmp/project_activity.json"
-  if File.exist?(project_activity_file) && File.mtime(project_activity_file) > (Time.now - 10*60)
-    @project_activity = File.read(project_activity_file)
-  else
-    @project_activity = open("https://api.github.com/repos/OSDDMalaria/OSDDMalaria_To_Do_List/issues", "UserAgent" => "Ruby-Wget").read
-    File.write(project_activity_file, @project_activity)
-  end
-  @project_activity
-end
-
 get '/reset' do
   response.headers['Access-Control-Allow-Origin'] = '*'
 
