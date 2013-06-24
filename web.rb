@@ -135,7 +135,7 @@ get '/project_activity_test' do
 
     as_obj = JSON.parse(@combined);
 
-    as_obj[0] = as_obj[as_obj.length -1]
+    as_obj[0] = as_obj[as_obj.length - 1]
 
     @back = as_obj.to_json
     @back
