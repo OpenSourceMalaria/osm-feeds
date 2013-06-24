@@ -133,10 +133,9 @@ get '/project_activity_test' do
     @closed_project_activity[0] = ' '
     @combined << @closed_project_activity
 
-    as_obj = JSON.parse(@combined);
+    object_array = JSON.parse(@combined);
+    object_array = object_array.sort_by { |hsh| hsh["created_at"] }
 
-    as_obj[0] = as_obj[as_obj.length - 1]
-
-    @back = as_obj.to_json
+    @back = object_array.to_json
     @back
 end
