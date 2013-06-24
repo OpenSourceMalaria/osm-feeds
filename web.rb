@@ -135,6 +135,7 @@ get '/project_activity_test' do
 
     object_array = JSON.parse(@combined);
     object_array = object_array.sort_by { |hsh| hsh["created_at"] }
+    object_array.reverse!
 
     @back = object_array.to_json
     @back
