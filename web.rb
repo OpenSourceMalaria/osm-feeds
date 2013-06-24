@@ -135,12 +135,8 @@ get '/project_activity_test' do
 
     as_obj = JSON.parse(@combined);
 
-    $log.debug "as_obj"
-    $log.debug as_obj
-
-    $log.debug as_obj.length
+    as_obj[0] = as_obj[as_obj.length -1]
 
     @back = as_obj.to_json
-    #@combined
     @back
 end
