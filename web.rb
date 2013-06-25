@@ -112,31 +112,40 @@ get '/project_activity_new' do
 
   response.headers['Access-Control-Allow-Origin'] = '*'
 
-  @github = Octokit::Client.new({client_id: '9ec9caed6c4a85ff0798',
-                                 client_secret: 'cd437e96e33b5a6cb0b8e394f413cb9639b9fd8f'})
+  project_activity_file = "/tmp/project_activity.json"
+  if File.exist?(project_activity_file) && File.mtime(project_activity_file) > (Time.now - 10*60)
+    $log.debug "Getting from file"
+    @combined = File.read(project_activity_file)
+  else
+    $log.debug "Getting from GitHub"
+    @github = Octokit::Client.new({client_id: '9ec9caed6c4a85ff0798',
+                                   client_secret: 'cd437e96e33b5a6cb0b8e394f413cb9639b9fd8f'})
 
-  @open_project_activity = @github.list_issues("OSDDMalaria/OSDDMalaria_To_Do_List", {state: 'open'})
-  @closed_project_activity = @github.list_issues("OSDDMalaria/OSDDMalaria_To_Do_List", {state: 'closed'})
+    @open_project_activity = @github.list_issues("OSDDMalaria/OSDDMalaria_To_Do_List", {state: 'open'})
+    @closed_project_activity = @github.list_issues("OSDDMalaria/OSDDMalaria_To_Do_List", {state: 'closed'})
 
-  @combined = @open_project_activity + @closed_project_activity
+    @combined = @open_project_activity + @closed_project_activity
 
-  @combined = @combined.sort_by { |hsh| hsh["updated_at"] }
+    @combined = @combined.sort_by { |hsh| hsh["updated_at"] }
 
-  @combined.reverse!
+    @combined.reverse!
 
-  for i in 0..11   # Only the top twelve are used
-    if @combined[i]["comments"] > 0
-      @comments = @github.issue_comments("OSDDMalaria/OSDDMalaria_To_Do_List", @combined[i].number)
-      for j in 0..@comments.length - 1
-        cdt = DateTime.parse (@comments[j]["updated_at"])
-        odt = DateTime.parse (@combined[i]["updated_at"])
-        if cdt-odt > 0
-          @combined[i]["updated_at"] = @comments[j]["updated_at"]
+    for i in 0..11   # Only the top twelve are used
+      if @combined[i]["comments"] > 0
+        @comments = @github.issue_comments("OSDDMalaria/OSDDMalaria_To_Do_List", @combined[i].number)
+        for j in 0..@comments.length - 1
+          cdt = DateTime.parse (@comments[j]["updated_at"])
+          odt = DateTime.parse (@combined[i]["updated_at"])
+          if cdt-odt > 0
+            @combined[i]["updated_at"] = @comments[j]["updated_at"]
+          end
         end
       end
     end
+    @combined = @combined.sort_by { |hsh| hsh["updated_at"] }
+    @combined.reverse!
+    @combined.to_json
+    File.write(project_activity_file, @combined)
   end
-  @combined = @combined.sort_by { |hsh| hsh["updated_at"] }
-  @combined.reverse!
-  @combined.to_json
+  @combined
 end
