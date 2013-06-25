@@ -120,8 +120,23 @@ get '/project_activity_new' do
 
   @combined = @open_project_activity + @closed_project_activity
 
-  @sorted = @combined.sort_by { |hsh| hsh["updated_at"] }
+  @combined = @combined.sort_by { |hsh| hsh["updated_at"] }
 
-  @sorted.reverse!
-  @sorted.to_json
+  @combined.reverse!
+
+  for i in 0..11   # Only the top twelve are used
+    if @combined[i]["comments"] > 0
+      @comments = @github.issue_comments("OSDDMalaria/OSDDMalaria_To_Do_List", @combined[i].number)
+      for j in 0..@comments.length - 1
+        cdt = DateTime.parse (@comments[j]["updated_at"])
+        odt = DateTime.parse (@combined[i]["updated_at"])
+        if cdt-odt > 0
+          @combined[i]["updated_at"] = @comments[j]["updated_at"]
+        end
+      end
+    end
+  end
+  @combined = @combined.sort_by { |hsh| hsh["updated_at"] }
+  @combined.reverse!
+  @combined.to_json
 end
