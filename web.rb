@@ -33,28 +33,11 @@ get '/' do
   jsonp @tweets
 end
 
-get '/sponsors_and_members_old' do
-  response.headers['Access-Control-Allow-Origin'] = '*'
-
-  members_file = "/tmp/members.json"
-
-  if File.exist?(members_file) && File.mtime(members_file) > (Time.now - 60*60)
-    @members = File.read(members_file)
-  else
-    @members = open("https://api.github.com/repos/OSDDMalaria/OSM_Website_Data/issues", "UserAgent" => "Ruby-Wget").read
-    File.write(members_file, @members)
-  end
-  @members
-end
-
 get '/sponsors_and_members' do
   response.headers['Access-Control-Allow-Origin'] = '*'
 
   @github = Octokit::Client.new({client_id: '9ec9caed6c4a85ff0798',
                                  client_secret: 'cd437e96e33b5a6cb0b8e394f413cb9639b9fd8f'})
-
-  $log.debug "GitHub instance = "
-  $log.debug @github
 
   @members = @github.list_issues("OSDDMalaria/OSM_Website_Data")
   @members.to_json
@@ -122,4 +105,20 @@ get '/project_activity' do
     @back = object_array.to_json
   end
   @back
+end
+
+
+get '/project_activity_new' do
+
+  response.headers['Access-Control-Allow-Origin'] = '*'
+
+  @github = Octokit::Client.new({client_id: '9ec9caed6c4a85ff0798',
+                                 client_secret: 'cd437e96e33b5a6cb0b8e394f413cb9639b9fd8f'})
+
+  @open_project_activity = @github.list_issues("OSDDMalaria/OSDDMalaria_To_Do_List", {state: 'open'})
+  @closed_project_activity = @github.list_issues("OSDDMalaria/OSDDMalaria_To_Do_List", {state: 'closed'})
+
+  @combined = @open_project_activity << @closed_project_activity
+
+  @combined.to_json
 end
