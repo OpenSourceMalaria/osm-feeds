@@ -118,7 +118,7 @@ get '/project_activity_new' do
   @open_project_activity = @github.list_issues("OSDDMalaria/OSDDMalaria_To_Do_List", {state: 'open'})
   @closed_project_activity = @github.list_issues("OSDDMalaria/OSDDMalaria_To_Do_List", {state: 'closed'})
 
-  @combined = @open_project_activity << @closed_project_activity
+  @combined = @open_project_activity + @closed_project_activity
 
   @sorted = @combined.sort_by { |hsh| hsh["updated_at"] }
 
