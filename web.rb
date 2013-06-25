@@ -120,5 +120,8 @@ get '/project_activity_new' do
 
   @combined = @open_project_activity << @closed_project_activity
 
-  @combined.to_json
+  @sorted = @combined.sort_by { |hsh| hsh["updated_at"] }
+
+  @sorted.reverse!
+  @sorted.to_json
 end
