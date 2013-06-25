@@ -144,8 +144,7 @@ get '/project_activity_new' do
     end
     @combined = @combined.sort_by { |hsh| hsh["updated_at"] }
     @combined.reverse!
-    @combined.to_json
-    File.write(project_activity_file, @combined)
+    File.write(project_activity_file, @combined.to_json)
   end
-  @combined
+  @combined.to_json
 end
