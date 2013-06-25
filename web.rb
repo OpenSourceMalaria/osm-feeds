@@ -9,6 +9,7 @@ require 'sinatra/jsonp'
 require 'json'
 require 'open-uri'
 require 'logger'
+require 'octokit'
 
 enable :logging
 
@@ -32,7 +33,7 @@ get '/' do
   jsonp @tweets
 end
 
-get '/sponsors_and_members' do
+get '/sponsors_and_members_old' do
   response.headers['Access-Control-Allow-Origin'] = '*'
 
   members_file = "/tmp/members.json"
@@ -44,6 +45,19 @@ get '/sponsors_and_members' do
     File.write(members_file, @members)
   end
   @members
+end
+
+get '/sponsors_and_members' do
+  response.headers['Access-Control-Allow-Origin'] = '*'
+
+  @github = Octokit::Client.new({client_id: '9ec9caed6c4a85ff0798',
+                                 client_secret: 'cd437e96e33b5a6cb0b8e394f413cb9639b9fd8f'})
+
+  $log.debug "GitHub instance = "
+  $log.debug @github
+
+  @members = @github.list_issues("OSDDMalaria/OSM_Website_Data")
+  @members.to_json
 end
 
 get '/reset' do
