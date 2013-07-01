@@ -39,7 +39,7 @@ get '/sponsors_and_members' do
   @github = Octokit::Client.new({client_id: '9ec9caed6c4a85ff0798',
                                  client_secret: 'cd437e96e33b5a6cb0b8e394f413cb9639b9fd8f'})
 
-  @members = @github.list_issues("OSDDMalaria/OSM_Website_Data")
+  @members = @github.list_issues("OpenSourceMalaria/OSM_Website_Data")
   @members.to_json
 end
 
@@ -74,10 +74,10 @@ get '/project_activity' do
     @github = Octokit::Client.new({client_id: '9ec9caed6c4a85ff0798',
                                    client_secret: 'cd437e96e33b5a6cb0b8e394f413cb9639b9fd8f'})
 
-    @open_project_activity = @github.list_issues("OSDDMalaria/OSDDMalaria_To_Do_List", {state: 'open'})
+    @open_project_activity = @github.list_issues("OpenSourceMalaria/OSM_To_Do_List", {state: 'open'})
     @open_project_activity = @open_project_activity.take(most_to_keep)
 
-    @closed_project_activity = @github.list_issues("OSDDMalaria/OSDDMalaria_To_Do_List", {state: 'closed'})
+    @closed_project_activity = @github.list_issues("OpenSourceMalaria/OSM_To_Do_List", {state: 'closed'})
     @closed_project_activity = @closed_project_activity.take(most_to_keep)
 
     @combined = @open_project_activity + @closed_project_activity
@@ -89,7 +89,7 @@ get '/project_activity' do
     @combined.each do |item|
       # do whatever
       if item["comments"] > 0
-        @comments = @github.issue_comments("OSDDMalaria/OSDDMalaria_To_Do_List", item.number)
+        @comments = @github.issue_comments("OpenSourceMalaria/OSM_To_Do_List", item.number)
         @comments.each do |comment|
           cdt = DateTime.parse (comment["updated_at"])
           odt = DateTime.parse (item["updated_at"])
