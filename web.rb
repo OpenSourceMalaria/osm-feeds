@@ -42,11 +42,19 @@ end
 get '/sponsors_and_members' do
   response.headers['Access-Control-Allow-Origin'] = '*'
 
-  @github = Octokit::Client.new({client_id: '9ec9caed6c4a85ff0798',
-                                 client_secret: 'cd437e96e33b5a6cb0b8e394f413cb9639b9fd8f'})
+  members_file = "/tmp/members.json"
 
-  @members = @github.list_issues("OpenSourceMalaria/OSM_Website_Data")
-  jsonp_response(@members.to_json)
+  if File.exist?(members_file) && File.mtime(members_file) > (Time.now - 10*60)
+    @members = File.read(members_file)     # already in json format
+  else
+    @github = Octokit::Client.new({client_id: '9ec9caed6c4a85ff0798',
+                                   client_secret: 'cd437e96e33b5a6cb0b8e394f413cb9639b9fd8f'})
+
+    @members = @github.list_issues("OpenSourceMalaria/OSM_Website_Data")
+    File.write(members_file, @members.to_json)   # store as json format
+    @members = @members.to_json   #convert to json for return to caller
+  end
+  jsonp_response(@members)
 end
 
 get '/reset' do
