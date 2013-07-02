@@ -13,6 +13,12 @@ require 'octokit'
 
 enable :logging
 
+def jsonp_response(data)
+  content_type "application/javascript"
+  callback = params[:callback] || "callback"
+  body "#{callback}(#{data})"
+end
+
 before do
   #Dir.mkdir('logs') unless File.exist?('logs')
   #$log = Logger.new('logs/output.log','weekly')
@@ -40,7 +46,7 @@ get '/sponsors_and_members' do
                                  client_secret: 'cd437e96e33b5a6cb0b8e394f413cb9639b9fd8f'})
 
   @members = @github.list_issues("OpenSourceMalaria/OSM_Website_Data")
-  @members.to_json
+  jsonp_response(@members.to_json)
 end
 
 get '/reset' do
@@ -104,5 +110,5 @@ get '/project_activity' do
     File.write(project_activity_file, @combined.to_json)
     @combined = @combined.to_json
   end
-  @combined
+  jsonp_response(@combined)
 end
