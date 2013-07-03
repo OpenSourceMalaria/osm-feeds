@@ -34,7 +34,7 @@ get '/' do
       :secret => "vhdaIEHI26KJiyB6bxuN5026lAtLc3tKZt1aZOYs"
   )
 
-  @tweets = @client.user_timeline( { :screen_name => 'OSDDMalaria' } )
+  @tweets = @client.user_timeline( { :screen_name => 'O_S_M' } )
 
   jsonp @tweets
 end
