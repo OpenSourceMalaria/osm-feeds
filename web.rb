@@ -20,18 +20,18 @@ def jsonp_response(data)
 end
 
 before do
-  #Dir.mkdir('logs') unless File.exist?('logs')
-  #$log = Logger.new('logs/output.log','weekly')
-  #$log.level = Logger::DEBUG
+  Dir.mkdir('logs') unless File.exist?('logs')
+  $log = Logger.new('logs/output.log','weekly')
+  $log.level = Logger::DEBUG
 end
 
 get '/' do
   response.headers['Access-Control-Allow-Origin'] = '*'
   @client = TwitterOAuth::Client.new(
-      :consumer_key => "Xan9gfeLPqIkRNPKbSqYtA",
-      :consumer_secret => "n9qwb5QHDWJc5TXM0JN0fjgj7gNK3trjpf5cZFqmL0",
-      :token => "351946902-APxV8nHCQM5TYbRX8jiYJpWvijTL1AKTnG405xIU",
-      :secret => "vhdaIEHI26KJiyB6bxuN5026lAtLc3tKZt1aZOYs"
+      :consumer_key => ENV['TWITTER_CONSUMER_KEY'],
+      :consumer_secret => ENV['TWITTER_CONSUMER_SECRET'],
+      :token => ENV["TWITTER_TOKEN"],
+      :secret => ENV["TWITTER_SECRET"]
   )
 
   @tweets = @client.user_timeline( { :screen_name => 'O_S_M' } )
@@ -47,8 +47,20 @@ get '/sponsors_and_members' do
   if File.exist?(members_file) && File.mtime(members_file) > (Time.now - 10*60)
     @members = File.read(members_file)     # already in json format
   else
-    @github = Octokit::Client.new({client_id: '9ec9caed6c4a85ff0798',
-                                   client_secret: 'cd437e96e33b5a6cb0b8e394f413cb9639b9fd8f'})
+    begin
+      @github = Octokit::Client.new({client_id: ENV['GITHUB_CLIENT_ID'],
+                                     client_secret: ENV['GITHUB_CLIENT_SECRET']})
+    rescue Exception => e
+      $log.debug "members error"
+      $log.debug e
+    end
+
+    begin
+      @members = @github.list_issues("OpenSourceMalaria/OSM_Website_Data")
+    rescue Exception => e
+      $log.debug "members read  error"
+      $log.debug e
+    end
 
     @members = @github.list_issues("OpenSourceMalaria/OSM_Website_Data")
     File.write(members_file, @members.to_json)   # store as json format
@@ -85,10 +97,14 @@ get '/project_activity' do
   if File.exist?(project_activity_file) && File.mtime(project_activity_file) > (Time.now - 10*60)
     @combined = File.read(project_activity_file)
   else
-    @github = Octokit::Client.new({client_id: '9ec9caed6c4a85ff0798',
-                                   client_secret: 'cd437e96e33b5a6cb0b8e394f413cb9639b9fd8f'})
+    @github = Octokit::Client.new({client_id: ENV['GITHUB_CLIENT_ID'],
+                                   client_secret: ENV['GITHUB_CLIENT_SECRET']})
 
-    @open_project_activity = @github.list_issues("OpenSourceMalaria/OSM_To_Do_List", {state: 'open'})
+    begin
+      @open_project_activity = @github.list_issues("OpenSourceMalaria/OSM_To_Do_List", {state: 'open'})
+    rescue Exception => e
+
+    end
     @open_project_activity = @open_project_activity.take(most_to_keep)
 
     @closed_project_activity = @github.list_issues("OpenSourceMalaria/OSM_To_Do_List", {state: 'closed'})
