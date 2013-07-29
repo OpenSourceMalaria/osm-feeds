@@ -42,6 +42,7 @@ get '/' do
     @tweets = @client.user_timeline( { :screen_name => 'O_S_M' } )
 
     File.write(tweets_file, @tweets.to_json)
+    @tweets = @tweets.to_json   #convert to json for return to caller
   end
   jsonp_response( @tweets )
 end
