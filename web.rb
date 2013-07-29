@@ -95,6 +95,7 @@ get '/reset' do
 
   project_activity_file = "/tmp/project_activity.json"
   members_file = "/tmp/members.json"
+  tweets_file = "/tmp/tweets.json"
 
   if File.exist?(project_activity_file)
     File.delete(project_activity_file)
