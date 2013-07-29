@@ -39,6 +39,20 @@ get '/' do
   jsonp @tweets
 end
 
+get '/twitter_rate_limit' do
+  response.headers['Access-Control-Allow-Origin'] = '*'
+  @client = TwitterOAuth::Client.new(
+      :consumer_key => ENV['TWITTER_CONSUMER_KEY'],
+      :consumer_secret => ENV['TWITTER_CONSUMER_SECRET'],
+      :token => ENV["TWITTER_TOKEN"],
+      :secret => ENV["TWITTER_SECRET"]
+  )
+
+  @rate_limit_status = @client.rate_limit_status( { :screen_name => 'O_S_M' } )
+
+  jsonp @rate_limit_status
+end
+
 get '/sponsors_and_members' do
   response.headers['Access-Control-Allow-Origin'] = '*'
 
