@@ -41,9 +41,9 @@ get '/' do
 
     @tweets = @client.user_timeline( { :screen_name => 'O_S_M' } )
 
-    File.write(tweets_file, @tweets)
+    File.write(tweets_file, @tweets.to_json)
   end
-  jsonp @tweets
+  jsonp_response( @tweets )
 end
 
 get '/twitter_rate_limit' do
