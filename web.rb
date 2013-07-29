@@ -27,15 +27,22 @@ end
 
 get '/' do
   response.headers['Access-Control-Allow-Origin'] = '*'
-  @client = TwitterOAuth::Client.new(
-      :consumer_key => ENV['TWITTER_CONSUMER_KEY'],
-      :consumer_secret => ENV['TWITTER_CONSUMER_SECRET'],
-      :token => ENV["TWITTER_TOKEN"],
-      :secret => ENV["TWITTER_SECRET"]
-  )
 
-  @tweets = @client.user_timeline( { :screen_name => 'O_S_M' } )
+  tweets_file = "/tmp/tweets.json"
+  if File.exist?(tweets_file) && File.mtime(tweets_file) > (Time.now - 10*60)
+    @tweets = File.read(tweets_file)     # already in json format
+  else
+    @client = TwitterOAuth::Client.new(
+        :consumer_key => ENV['TWITTER_CONSUMER_KEY'],
+        :consumer_secret => ENV['TWITTER_CONSUMER_SECRET'],
+        :token => ENV["TWITTER_TOKEN"],
+        :secret => ENV["TWITTER_SECRET"]
+    )
 
+    @tweets = @client.user_timeline( { :screen_name => 'O_S_M' } )
+
+    File.write(tweets_file, @tweets)
+  end
   jsonp @tweets
 end
 
@@ -95,6 +102,10 @@ get '/reset' do
 
   if File.exist?(members_file)
     File.delete(members_file)
+  end
+
+  if File.exist?(tweets_file)
+    File.delete(tweets_file)
   end
 
   "Data reset complete"
