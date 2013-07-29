@@ -48,7 +48,7 @@ get '/twitter_rate_limit' do
       :secret => ENV["TWITTER_SECRET"]
   )
 
-  @rate_limit_status = @client.rate_limit_status( { :screen_name => 'O_S_M' } )
+  @rate_limit_status = @client.rate_limit_status()
 
   jsonp @rate_limit_status
 end
