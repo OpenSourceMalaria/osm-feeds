@@ -95,11 +95,16 @@ get '/reset' do
   response.headers['Access-Control-Allow-Origin'] = '*'
 
   project_activity_file = "/tmp/project_activity.json"
+  leaders_file = "/tmp/leader_board.json"
   members_file = "/tmp/members.json"
   tweets_file = "/tmp/tweets.json"
 
   if File.exist?(project_activity_file)
     File.delete(project_activity_file)
+  end
+
+  if File.exist?(leaders_file)
+    File.delete(leaders_file)
   end
 
   if File.exist?(members_file)
@@ -116,11 +121,13 @@ end
 
 get '/project_activity' do
 
-  most_to_keep = 12;
+  most_to_keep = 12
 
   response.headers['Access-Control-Allow-Origin'] = '*'
 
   project_activity_file = "/tmp/project_activity.json"
+  leader_board_file = "/tmp/leader_board.json"
+
   if File.exist?(project_activity_file) && File.mtime(project_activity_file) > (Time.now - 10*60)
     @combined = File.read(project_activity_file)
   else
@@ -130,7 +137,6 @@ get '/project_activity' do
     begin
       @open_project_activity = @github.list_issues("OpenSourceMalaria/OSM_To_Do_List", {state: 'open'})
     rescue Exception => e
-
     end
     @open_project_activity = @open_project_activity.take(most_to_keep)
 
@@ -142,14 +148,18 @@ get '/project_activity' do
     @combined = @combined.sort_by { |hsh| hsh["updated_at"] }
     @combined.reverse!
     @combined = @combined.take(most_to_keep)
-
+    leader_str = ''
     @combined.each do |item|
       # do whatever
+      leader_str = leader_str + ' ' + item["user"]["login"]
+      item.body = item.body[0...500]
+
       if item["comments"] > 0
         @comments = @github.issue_comments("OpenSourceMalaria/OSM_To_Do_List", item.number)
         @comments.each do |comment|
-          cdt = DateTime.parse (comment["updated_at"])
-          odt = DateTime.parse (item["updated_at"])
+          leader_str = leader_str + ' ' + comment["user"]["login"]
+          cdt = DateTime.parse (comment["updated_at"].to_s)
+          odt = DateTime.parse (item["updated_at"].to_s)
           if cdt-odt > 0
             item["updated_at"] = comment["updated_at"]
           end
@@ -160,6 +170,25 @@ get '/project_activity' do
     @combined.reverse!
     File.write(project_activity_file, @combined.to_json)
     @combined = @combined.to_json
+    @leaders = leader_str.split.inject(Hash.new(0)) { |k,v| k[v] += 1; k}
+    @leaders = Hash[@leaders.sort_by {|k,v| v }.reverse]
+    File.write(leader_board_file, @leaders.to_json)
   end
   jsonp_response(@combined)
+end
+
+get '/leaders' do
+
+  response.headers['Access-Control-Allow-Origin'] = '*'
+
+  leader_board_file = "/tmp/leader_board.json"
+
+  if File.exist?(leader_board_file)
+    @leaders = File.read(leader_board_file)
+  else
+    @leaders = {"mattodd" => 43, "alintheopen" => 12}
+  end
+
+  @leaders = @leaders.to_json
+  jsonp_response(@leaders)
 end
