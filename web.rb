@@ -163,3 +163,65 @@ get '/project_activity' do
   end
   jsonp_response(@combined)
 end
+
+get '/project_activity_with_leaders' do
+
+  most_to_keep = 12;
+  leaders_count = 5
+
+  response.headers['Access-Control-Allow-Origin'] = '*'
+
+  project_activity_file = "/tmp/project_activity.json"
+  if File.exist?(project_activity_file) && File.mtime(project_activity_file) > (Time.now - 10*60)
+    response = File.read(project_activity_file)
+  else
+    @github = Octokit::Client.new({client_id: ENV['GITHUB_CLIENT_ID'],
+                                   client_secret: ENV['GITHUB_CLIENT_SECRET']})
+
+    begin
+      @open_project_activity = @github.list_issues("OpenSourceMalaria/OSM_To_Do_List", {state: 'open'})
+    rescue Exception => e
+
+    end
+    open_user_logins = @open_project_activity.map{|p| p['user']['login']}
+    @open_project_activity = @open_project_activity.take(most_to_keep)
+
+    @closed_project_activity = @github.list_issues("OpenSourceMalaria/OSM_To_Do_List", {state: 'closed'})
+    closed_user_logins = @closed_project_activity.map{|p| p['user']['login']}
+
+    @closed_project_activity = @closed_project_activity.take(most_to_keep)
+
+    @combined = @open_project_activity + @closed_project_activity
+    user_logins = open_user_logins + closed_user_logins
+
+    @combined = @combined.sort_by { |hsh| hsh["updated_at"] }.reverse
+    @combined = @combined.take(most_to_keep)
+
+    @combined.each do |item|
+      # do whatever
+      if item["comments"] > 0
+        @comments = @github.issue_comments("OpenSourceMalaria/OSM_To_Do_List", item.number)
+        @comments.each do |comment|
+          user_logins << comment['user']['login']
+          cdt = DateTime.parse (comment["updated_at"])
+          odt = DateTime.parse (item["updated_at"])
+          if cdt-odt > 0
+            item["updated_at"] = comment["updated_at"]
+          end
+        end
+      end
+    end
+
+    user_scores = user_logins.inject(Hash.new(0)) { |h, e| h[e] += 1 ; h }
+    leader_logins = Hash[user_scores.sort_by {|key, value| value}.reverse[0..(leaders_count - 1)]].keys
+
+    @leaders = []
+    leader_logins.each do |leader_login|
+      @leaders << @github.user(leader_login)
+    end
+
+    response = { activity: @combined, leaders: @leaders }.to_json
+    File.write(project_activity_file, response)
+  end
+  jsonp_response(response)
+end
