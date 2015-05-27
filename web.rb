@@ -225,6 +225,8 @@ get '/project_activity_with_leaders' do
     #p "================"
     #@leaders = Hash[@leaders { |k,v| k,v }.reverse]
     @leaders.sort_by {|k,v| v}.reverse
+    #p @leaders
+    #p "------------------"
     @leaders_array = @leaders.map { |k,v| { k => v} }
     #p @leaders_array
     #p "**********************"
