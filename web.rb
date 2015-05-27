@@ -204,7 +204,6 @@ get '/project_activity_with_leaders' do
 
     leader_str = ''
     @combined.each do |item|
-      # do whatever
       leader_str = leader_str + ' ' + item["user"]["login"]
       if item["comments"] > 0
         @comments = @github.issue_comments("OpenSourceMalaria/OSM_To_Do_List", item.number)
@@ -218,18 +217,9 @@ get '/project_activity_with_leaders' do
         end
       end
     end
-    #p leader_str
-    #p "-----"
     @leaders = leader_str.split.inject(Hash.new(0)) { |k,v| k[v] += 1; k}
-    #p @leaders
-    #p "================"
-    #@leaders = Hash[@leaders { |k,v| k,v }.reverse]
-    @leaders.sort_by {|k,v| v}.reverse
-    #p @leaders
-    #p "------------------"
     @leaders_array = @leaders.map { |k,v| { k => v} }
-    #p @leaders_array
-    #p "**********************"
+    @leaders_array.sort_by {|k,v| v}.reverse
 
     response = { activity: @combined, leaders: @leaders_array }.to_json
     File.write(project_activity_file, response)
