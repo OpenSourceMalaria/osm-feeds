@@ -220,7 +220,7 @@ get '/project_activity_with_leaders' do
     end
     #p leader_str
     #p "-----"
-    @leaders = leader_str.split.inject(Hash.new(0)) { |k,v| k; k[v] += 1}
+    @leaders = leader_str.split.inject(Hash.new(0)) { |k,v| k[v] += 1; k}
     #p @leaders
     #p "================"
     #@leaders = Hash[@leaders { |k,v| k,v }.reverse]
