@@ -188,22 +188,20 @@ get '/project_activity_with_leaders' do
     rescue Exception => e
 
     end
-    #open_user_logins = @open_project_activity.map{|p| p['user']['login']}
     @open_project_activity = @open_project_activity.take(most_to_keep)
 
     @closed_project_activity = @github.list_issues("OpenSourceMalaria/OSM_To_Do_List", {state: 'closed'})
-    #closed_user_logins = @closed_project_activity.map{|p| p['user']['login']}
 
     @closed_project_activity = @closed_project_activity.take(most_to_keep)
 
     @combined = @open_project_activity + @closed_project_activity
-    #user_logins = open_user_logins + closed_user_logins
 
     @combined = @combined.sort_by { |hsh| hsh["updated_at"] }.reverse
     @combined = @combined.take(most_to_keep)
 
     leader_str = ''
     @combined.each do |item|
+      leader_str = leader_str + ' ' + item["user"]["login"]
       leader_str = leader_str + ' ' + item["user"]["login"]
       if item["comments"] > 0
         @comments = @github.issue_comments("OpenSourceMalaria/OSM_To_Do_List", item.number)
