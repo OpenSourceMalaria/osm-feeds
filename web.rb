@@ -211,19 +211,25 @@ get '/project_activity_with_leaders' do
         @comments.each do |comment|
           cdt = DateTime.parse (comment["updated_at"].to_s)
           odt = DateTime.parse (item["updated_at"].to_s)
-          leader_str = leader_str + ' ' + comment["user"]["login"]
+          leader_str = leader_str + ' ' + comment[  "user"]["login"]
           if cdt-odt > 0
             item["updated_at"] = comment["updated_at"]
           end
         end
       end
     end
-    p leader_str
-    p "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
-    @leaders = leader_str.split.inject(Hash.new(0)) { |k,v| k[v] += 1; k}
-    @leaders = Hash[@leaders.sort_by {|k,v| v }.reverse]
+    #p leader_str
+    #p "-----"
+    @leaders = leader_str.split.inject(Hash.new(0)) { |k,v| k; k[v] += 1}
+    #p @leaders
+    #p "================"
+    #@leaders = Hash[@leaders { |k,v| k,v }.reverse]
+    @leaders.sort_by {|k,v| v}.reverse
+    @leaders_array = @leaders.map { |k,v| { k => v} }
+    #p @leaders_array
+    #p "**********************"
 
-    response = { activity: @combined, leaders: @leaders }.to_json
+    response = { activity: @combined, leaders: @leaders_array }.to_json
     File.write(project_activity_file, response)
   end
   jsonp_response(response)
