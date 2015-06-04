@@ -236,10 +236,10 @@ get '/ostb/' do
     @tweets = File.read(tweets_file)     # already in json format
   else
     @client = TwitterOAuth::Client.new(
-        :consumer_key => ENV['TWITTER_CONSUMER_KEY'],
-        :consumer_secret => ENV['TWITTER_CONSUMER_SECRET'],
-        :token => ENV["TWITTER_TOKEN"],
-        :secret => ENV["TWITTER_SECRET"]
+        :consumer_key => ENV['OSTB_TWITTER_CONSUMER_KEY'],
+        :consumer_secret => ENV['OSTB_TWITTER_CONSUMER_SECRET'],
+        :token => ENV["OSTB_TWITTER_TOKEN"],
+        :secret => ENV["OSTB_TWITTER_SECRET"]
     )
 
     @tweets = @client.user_timeline( { :screen_name => 'O_S_T_B' } )
@@ -253,10 +253,10 @@ end
 get '/ostb/twitter_rate_limit' do
   response.headers['Access-Control-Allow-Origin'] = '*'
   @client = TwitterOAuth::Client.new(
-      :consumer_key => ENV['TWITTER_CONSUMER_KEY'],
-      :consumer_secret => ENV['TWITTER_CONSUMER_SECRET'],
-      :token => ENV["TWITTER_TOKEN"],
-      :secret => ENV["TWITTER_SECRET"]
+      :consumer_key => ENV['OSTB_TWITTER_CONSUMER_KEY'],
+      :consumer_secret => ENV['OSTB_TWITTER_CONSUMER_SECRET'],
+      :token => ENV["OSTB_TWITTER_TOKEN"],
+      :secret => ENV["OSTB_TWITTER_SECRET"]
   )
 
   @rate_limit_status = @client.rate_limit_status()
@@ -273,8 +273,8 @@ get '/ostb/sponsors_and_members' do
     @members = File.read(members_file)     # already in json format
   else
     begin
-      @github = Octokit::Client.new({client_id: ENV['GITHUB_CLIENT_ID'],
-                                     client_secret: ENV['GITHUB_CLIENT_SECRET']})
+      @github = Octokit::Client.new({client_id: ENV['OSTB_GITHUB_CLIENT_ID'],
+                                     client_secret: ENV['OSTB_GITHUB_CLIENT_SECRET']})
     rescue Exception => e
       $log.debug "members error"
       $log.debug e
@@ -333,8 +333,8 @@ get '/ostb/project_activity_with_leaders' do
   if File.exist?(project_activity_file) && File.mtime(project_activity_file) > (Time.now - 10*60)
     response = File.read(project_activity_file)
   else
-    @github = Octokit::Client.new({client_id: ENV['GITHUB_CLIENT_ID'],
-                                   client_secret: ENV['GITHUB_CLIENT_SECRET']})
+    @github = Octokit::Client.new({client_id: ENV['OSTB_GITHUB_CLIENT_ID'],
+                                   client_secret: ENV['OSTB_GITHUB_CLIENT_SECRET']})
 
     begin
       @open_project_activity = @github.list_issues("OpenSourceTB/OSTB_To_Do_List", {state: 'open'})
