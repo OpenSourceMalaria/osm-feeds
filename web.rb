@@ -228,7 +228,7 @@ end
 # OSTB endpoints follow
 
 
-get '/ostb' do
+get '/ostb/tweets' do
 
   response.headers['Access-Control-Allow-Origin'] = '*'
 
