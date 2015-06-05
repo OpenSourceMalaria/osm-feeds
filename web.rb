@@ -228,7 +228,8 @@ end
 # OSTB endpoints follow
 
 
-get '/ostb/' do
+get '/ostb' do
+
   response.headers['Access-Control-Allow-Origin'] = '*'
 
   tweets_file = "/tmp/ostb_tweets.json"
