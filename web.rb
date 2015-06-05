@@ -281,13 +281,13 @@ get '/ostb/sponsors_and_members' do
     end
 
     begin
-      @members = @github.list_issues("OpenSourceTB/OSTB_Website_Data")
+      @members = @github.list_issues("OpenSourceTB/TB_Website_Data")
     rescue Exception => e
       $log.debug "members read  error"
       $log.debug e
     end
 
-    @members = @github.list_issues("OpenSourceTB/OSTB_Website_Data")
+    @members = @github.list_issues("OpenSourceTB/TB_Website_Data")
     File.write(members_file, @members.to_json)   # store as json format
     @members = @members.to_json   #convert to json for return to caller
   end
@@ -337,13 +337,13 @@ get '/ostb/project_activity_with_leaders' do
                                    client_secret: ENV['OSTB_GITHUB_CLIENT_SECRET']})
 
     begin
-      @open_project_activity = @github.list_issues("OpenSourceTB/OSTB_To_Do_List", {state: 'open'})
+      @open_project_activity = @github.list_issues("OpenSourceTB/OpenSourceTB_To_Do_List", {state: 'open'})
     rescue Exception => e
 
     end
     @open_project_activity = @open_project_activity.take(most_to_keep)
 
-    @closed_project_activity = @github.list_issues("OpenSourceTB/OSTB_To_Do_List", {state: 'closed'})
+    @closed_project_activity = @github.list_issues("OpenSourceTB/OpenSourceTB_To_Do_List", {state: 'closed'})
 
     @closed_project_activity = @closed_project_activity.take(most_to_keep)
 
@@ -357,7 +357,7 @@ get '/ostb/project_activity_with_leaders' do
       leader_str = leader_str + ' ' + item["user"]["login"]
       leader_str = leader_str + ' ' + item["user"]["login"]
       if item["comments"] > 0
-        @comments = @github.issue_comments("OpenSourceTB/OSTB_To_Do_List", item.number)
+        @comments = @github.issue_comments("OpenSourceTB/OpenSourceTB_To_Do_List", item.number)
         @comments.each do |comment|
           cdt = DateTime.parse (comment["updated_at"].to_s)
           odt = DateTime.parse (item["updated_at"].to_s)
