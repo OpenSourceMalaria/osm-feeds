@@ -243,7 +243,7 @@ get '/ostb/tweets' do
         :secret => ENV["OSTB_TWITTER_SECRET"]
     )
 
-    @tweets = @client.user_timeline( { :screen_name => 'O_S_T_B' } )
+    @tweets = @client.user_timeline( { :screen_name => 'OpenSourceTB' } )
 
     File.write(tweets_file, @tweets.to_json)
     @tweets = @tweets.to_json   #convert to json for return to caller
