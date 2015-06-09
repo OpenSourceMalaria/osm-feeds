@@ -364,7 +364,7 @@ get '/ostb/project_activity_with_leaders' do
           #@closed_project_activity = @closed_project_activity.take(most_to_keep)
 
           @combined = @open_project_activity + @closed_project_activity
-          @combined = @combined.sort_by { |hsh| hsh["updated_at"] }.reverse
+          @combined = @combixned.sort_by { |hsh| hsh["updated_at"] }.reverse
           #@combined = @combined.take(most_to_keep)
 
           @combined.each do |item|
