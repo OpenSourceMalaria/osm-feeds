@@ -331,63 +331,7 @@ get '/ostb/project_activity_with_leaders' do
   response.headers['Access-Control-Allow-Origin'] = '*'
 
   project_activity_file = "/tmp/ostb_project_activity_with_leaders.json"
-  if File.exist?(project_activity_file) && File.mtime(project_activity_file) > (Time.now - 10*60)
-    response = File.read(project_activity_file)
-  else
-    @github = Octokit::Client.new({client_id: ENV['OSTB_GITHUB_CLIENT_ID'],
-                                   client_secret: ENV['OSTB_GITHUB_CLIENT_SECRET']})
-
-    begin
-      @open_project_activity = @github.list_issues("OpenSourceTB/OpenSourceTB_To_Do_List", {state: 'open'})
-    rescue Exception => e
-
-    end
-    @open_project_activity = @open_project_activity.take(most_to_keep)
-
-    @closed_project_activity = @github.list_issues("OpenSourceTB/OpenSourceTB_To_Do_List", {state: 'closed'})
-
-    @closed_project_activity = @closed_project_activity.take(most_to_keep)
-
-    @combined = @open_project_activity + @closed_project_activity
-
-    @combined = @combined.sort_by { |hsh| hsh["updated_at"] }.reverse
-    @combined = @combined.take(most_to_keep)
-
-    leader_str = ''
-    @combined.each do |item|
-      leader_str = leader_str + ' ' + item["user"]["login"]
-      leader_str = leader_str + ' ' + item["user"]["login"]
-      if item["comments"] > 0
-        @comments = @github.issue_comments("OpenSourceTB/OpenSourceTB_To_Do_List", item.number)
-        @comments.each do |comment|
-          cdt = DateTime.parse (comment["updated_at"].to_s)
-          odt = DateTime.parse (item["updated_at"].to_s)
-          leader_str = leader_str + ' ' + comment["user"]["login"]
-          if cdt-odt > 0
-            item["updated_at"] = comment["updated_at"]
-          end
-        end
-      end
-    end
-    @leaders = leader_str.split.inject(Hash.new(0)) { |k,v| k[v] += 1; k}
-    @leaders_array = @leaders.map { |k,v| { k => v} }
-    @leaders_array.sort_by {|k,v| v}.reverse
-
-    response = { activity: @combined, leaders: @leaders_array }.to_json
-    File.write(project_activity_file, response)
-  end
-  jsonp_response(response)
-end
-
-get '/ostb/project_activity_with_leaders_multi' do
-
-  most_to_keep = 12
-  leaders_count = 5
-
-  response.headers['Access-Control-Allow-Origin'] = '*'
-
-  project_activity_file = "/tmp/ostb_project_activity_with_leaders.json"
-  if  3 == 7   # File.exist?(project_activity_file) && File.mtime(project_activity_file) > (Time.now - 10*60)
+  if  File.exist?(project_activity_file) && File.mtime(project_activity_file) > (Time.now - 10*60)
     response = File.read(project_activity_file)
   else
     @github = Octokit::Client.new({client_id: ENV['OSTB_GITHUB_CLIENT_ID'],
@@ -406,13 +350,12 @@ get '/ostb/project_activity_with_leaders_multi' do
           dataIndex = i
         end
     end
-    p "dataIndex #{dataIndex}"
     @total = nil
     leader_str = ''
     if dataIndex > -1
-      aaa = @issues[dataIndex]
-      bbb = aaa[:body].split(/\r\n/)
-      bbb.each do |listname|
+      #aaa = @issues[dataIndex]
+      #bbb = @issues[dataIndex][:body].split(/\r\n/)
+      @issues[dataIndex][:body].split(/\r\n/).each do |listname|
         begin
           @open_project_activity = @github.list_issues("OpenSourceTB/" + listname, {state: 'open'})
           #@open_project_activity = @open_project_activity.take(most_to_keep)
@@ -421,7 +364,6 @@ get '/ostb/project_activity_with_leaders_multi' do
           #@closed_project_activity = @closed_project_activity.take(most_to_keep)
 
           @combined = @open_project_activity + @closed_project_activity
-          p @combined
           @combined = @combined.sort_by { |hsh| hsh["updated_at"] }.reverse
           #@combined = @combined.take(most_to_keep)
 
