@@ -298,7 +298,7 @@ end
 get '/ostb/reset' do
   response.headers['Access-Control-Allow-Origin'] = '*'
 
-  project_activity_file = "/tmp/ostb_project_activity.json"
+  project_activity_file = "/tmp/ostb_project_activity_with_leaders.json"
   leaders_file = "/tmp/ostb_leader_board.json"
   members_file = "/tmp/ostb_members.json"
   tweets_file = "/tmp/ostb_tweets.json"
@@ -362,7 +362,7 @@ get '/ostb/project_activity_with_leaders' do
         @comments.each do |comment|
           cdt = DateTime.parse (comment["updated_at"].to_s)
           odt = DateTime.parse (item["updated_at"].to_s)
-          leader_str = leader_str + ' ' + comment[  "user"]["login"]
+          leader_str = leader_str + ' ' + comment["user"]["login"]
           if cdt-odt > 0
             item["updated_at"] = comment["updated_at"]
           end
@@ -374,6 +374,87 @@ get '/ostb/project_activity_with_leaders' do
     @leaders_array.sort_by {|k,v| v}.reverse
 
     response = { activity: @combined, leaders: @leaders_array }.to_json
+    File.write(project_activity_file, response)
+  end
+  jsonp_response(response)
+end
+
+get '/ostb/project_activity_with_leaders_multi' do
+
+  most_to_keep = 12
+  leaders_count = 5
+
+  response.headers['Access-Control-Allow-Origin'] = '*'
+
+  project_activity_file = "/tmp/ostb_project_activity_with_leaders.json"
+  if  3 == 7   # File.exist?(project_activity_file) && File.mtime(project_activity_file) > (Time.now - 10*60)
+    response = File.read(project_activity_file)
+  else
+    @github = Octokit::Client.new({client_id: ENV['OSTB_GITHUB_CLIENT_ID'],
+                                   client_secret: ENV['OSTB_GITHUB_CLIENT_SECRET']})
+
+    begin
+      @issues = @github.list_issues("OpenSourceTB/TB_Website_Data")
+    rescue Exception => e
+      $log.debug "issues read  error"
+      $log.debug e
+    end
+    dataIndex = -1
+
+    @issues.each_with_index do |issue, i|
+        if issue.title == "issue_lists"
+          dataIndex = i
+        end
+    end
+    p "dataIndex #{dataIndex}"
+    @total = nil
+    leader_str = ''
+    if dataIndex > -1
+      aaa = @issues[dataIndex]
+      bbb = aaa[:body].split(/\r\n/)
+      bbb.each do |listname|
+        begin
+          @open_project_activity = @github.list_issues("OpenSourceTB/" + listname, {state: 'open'})
+          #@open_project_activity = @open_project_activity.take(most_to_keep)
+
+          @closed_project_activity = @github.list_issues("OpenSourceTB/" + listname, {state: 'closed'})
+          #@closed_project_activity = @closed_project_activity.take(most_to_keep)
+
+          @combined = @open_project_activity + @closed_project_activity
+          p @combined
+          @combined = @combined.sort_by { |hsh| hsh["updated_at"] }.reverse
+          #@combined = @combined.take(most_to_keep)
+
+          @combined.each do |item|
+            leader_str = leader_str + ' ' + item["user"]["login"]
+            leader_str = leader_str + ' ' + item["user"]["login"]
+            if item["comments"] > 0
+              @comments = @github.issue_comments("OpenSourceTB/" + listname, item.number)
+              @comments.each do |comment|
+                cdt = DateTime.parse (comment["updated_at"].to_s)
+                odt = DateTime.parse (item["updated_at"].to_s)
+                leader_str = leader_str + ' ' + comment["user"]["login"]
+                if cdt-odt > 0
+                  item["updated_at"] = comment["updated_at"]
+                end
+              end
+            end
+          end
+          if @total == nil
+            @total = @combined
+          else
+            @total = @total + @combined
+          end
+        rescue Exception => e
+        end
+      end
+    end
+
+    @leaders = leader_str.split.inject(Hash.new(0)) { |k,v| k[v] += 1; k}
+    @leaders_array = @leaders.map { |k,v| { k => v} }
+    @leaders_array.sort_by {|k,v| v}.reverse
+
+    response = { activity: @total, leaders: @leaders_array }.to_json
     File.write(project_activity_file, response)
   end
   jsonp_response(response)
