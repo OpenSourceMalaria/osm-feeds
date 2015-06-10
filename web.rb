@@ -95,12 +95,17 @@ get '/reset' do
   response.headers['Access-Control-Allow-Origin'] = '*'
 
   project_activity_file = "/tmp/project_activity.json"
+  project_activity_file_leaders = "/tmp/project_activity_with_leaders.json"
   leaders_file = "/tmp/leader_board.json"
   members_file = "/tmp/members.json"
   tweets_file = "/tmp/tweets.json"
 
   if File.exist?(project_activity_file)
     File.delete(project_activity_file)
+  end
+
+  if File.exist?(project_activity_file_leaders)
+    File.delete(project_activity_file_leaders)
   end
 
   if File.exist?(leaders_file)
@@ -167,6 +172,87 @@ get '/project_activity' do
     @combined = @combined.to_json
   end
   jsonp_response(@combined)
+end
+
+get '/project_activity_with_leaders_multi' do
+
+  most_to_keep = 12
+  leaders_count = 5
+
+  response.headers['Access-Control-Allow-Origin'] = '*'
+
+  project_activity_file = "/tmp/project_activity_with_leaders.json"
+  if  File.exist?(project_activity_file) && File.mtime(project_activity_file) > (Time.now - 10*60)
+    response = File.read(project_activity_file)
+  else
+    @github = Octokit::Client.new({client_id: ENV['OSTB_GITHUB_CLIENT_ID'],
+                                   client_secret: ENV['OSTB_GITHUB_CLIENT_SECRET']})
+    begin
+      @issues = @github.list_issues("OpenSourceMalaria/OSM_Website_Data")
+    rescue Exception => e
+      $log.debug "issues read  error"
+      $log.debug e
+    end
+    data_index = -1
+
+    if @issues != nil
+      @issues.each_with_index do |issue, i|
+        if issue.title == "issue_lists"
+          data_index = i
+        end
+      end
+      @total = nil
+      leader_str = ''
+      if data_index > -1
+        issue_list_names = @issues[data_index]
+        issue_list_names[:body].split(/\r\n/).each do |listname|
+          begin
+            @open_project_activity = @github.list_issues("OpenSourceMalaria/" + listname, {state: 'open'})
+            @open_project_activity = @open_project_activity.take(most_to_keep)
+
+            @closed_project_activity = @github.list_issues("OpenSourceMalaria/" + listname, {state: 'closed'})
+            @closed_project_activity = @closed_project_activity.take(most_to_keep)
+
+            @combined = @open_project_activity + @closed_project_activity
+            @combined = @combined.sort_by { |hsh| hsh["updated_at"] }.reverse
+            @combined = @combined.take(most_to_keep)
+
+            @combined.each do |item|
+              leader_str = leader_str + ' ' + item["user"]["login"]
+              leader_str = leader_str + ' ' + item["user"]["login"]
+              if item["comments"] > 0
+                @comments = @github.issue_comments("OpenSourceMalaria/" + listname, item.number)
+                @comments.each do |comment|
+                  cdt = DateTime.parse (comment["updated_at"].to_s)
+                  odt = DateTime.parse (item["updated_at"].to_s)
+                  leader_str = leader_str + ' ' + comment["user"]["login"]
+                  if cdt-odt > 0
+                    item["updated_at"] = comment["updated_at"]
+                  end
+                end
+              end
+            end
+            if @total == nil
+              @total = @combined
+            else
+              @total = @total + @combined
+            end
+          rescue Exception => e
+          end
+        end
+      end
+    else
+      leader_str = "No_Data"
+      @total = nil
+    end
+    @leaders = leader_str.split.inject(Hash.new(0)) { |k,v| k[v] += 1; k}
+    @leaders_array = @leaders.map { |k,v| { k => v} }
+    @leaders_array.sort_by {|k,v| v}.reverse
+
+    response = { activity: @total, leaders: @leaders_array }.to_json
+    File.write(project_activity_file, response)
+  end
+  jsonp_response(response)
 end
 
 get '/project_activity_with_leaders' do
@@ -343,19 +429,18 @@ get '/ostb/project_activity_with_leaders' do
       $log.debug "issues read  error"
       $log.debug e
     end
-    dataIndex = -1
+    data_index = -1
 
     @issues.each_with_index do |issue, i|
         if issue.title == "issue_lists"
-          dataIndex = i
+          data_index = i
         end
     end
     @total = nil
     leader_str = ''
-    if dataIndex > -1
-      #aaa = @issues[dataIndex]
-      #bbb = @issues[dataIndex][:body].split(/\r\n/)
-      @issues[dataIndex][:body].split(/\r\n/).each do |listname|
+    if data_index > -1
+      issue_list_names = @issues[data_index]
+      issue_list_names[:body].split(/\r\n/).each do |listname|
         begin
           @open_project_activity = @github.list_issues("OpenSourceTB/" + listname, {state: 'open'})
           #@open_project_activity = @open_project_activity.take(most_to_keep)
@@ -364,7 +449,7 @@ get '/ostb/project_activity_with_leaders' do
           #@closed_project_activity = @closed_project_activity.take(most_to_keep)
 
           @combined = @open_project_activity + @closed_project_activity
-          @combined = @combixned.sort_by { |hsh| hsh["updated_at"] }.reverse
+          @combined = @combined.sort_by { |hsh| hsh["updated_at"] }.reverse
           #@combined = @combined.take(most_to_keep)
 
           @combined.each do |item|
