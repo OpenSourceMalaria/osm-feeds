@@ -384,7 +384,7 @@ get '/ostb/project_activity_with_leaders' do
     leader_str = ''
     if data_index > -1
       issue_list_names = @issues[data_index]
-      issue_list_names[:body].split(/\r\n/).each do |listname|
+      issue_list_names[:body].split(/\r?\n/).each do |listname|
         begin
           @open_project_activity = @github.list_issues("OpenSourceTB/" + listname, {state: 'open'})
           #@open_project_activity = @open_project_activity.take(most_to_keep)
