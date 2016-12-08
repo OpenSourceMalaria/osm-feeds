@@ -187,64 +187,46 @@ get '/project_activity_with_leaders' do
   else
     @github = Octokit::Client.new({client_id: ENV['OSTB_GITHUB_CLIENT_ID'],
                                    client_secret: ENV['OSTB_GITHUB_CLIENT_SECRET']})
-    begin
-      @issues = @github.list_issues("OpenSourceMalaria/OSM_Website_Data")
-    rescue Exception => e
-      $log.debug "issues read  error"
-      $log.debug e
-    end
-    data_index = -1
+    @issues = @github.list_issues("OpenSourceMalaria/OSM_Website_Data")
 
-    if @issues != nil
-      @issues.each_with_index do |issue, i|
-        if issue.title == "issue_lists"
-          data_index = i
-        end
-      end
-      @total = nil
-      leader_str = ''
-      if data_index > -1
-        issue_list_names = @issues[data_index]
-        issue_list_names[:body].split(/\r\n/).each do |listname|
-          begin
-            @open_project_activity = @github.list_issues("OpenSourceMalaria/" + listname, {state: 'open'})
-            @open_project_activity = @open_project_activity.take(most_to_keep)
+		@total = nil
+		leader_str = ''
 
-            @closed_project_activity = @github.list_issues("OpenSourceMalaria/" + listname, {state: 'closed'})
-            @closed_project_activity = @closed_project_activity.take(most_to_keep)
+		issue_list_names = @issues.detect{ |issue| issue.title == "issue_lists"}
+		
+		issue_list_names[:body].split(/\r?\n/).each do |listname|
+			@open_project_activity = @github.list_issues("OpenSourceMalaria/" + listname, {state: 'open'})
+			@open_project_activity = @open_project_activity.take(most_to_keep)
 
-            @combined = @open_project_activity + @closed_project_activity
-            @combined = @combined.sort_by { |hsh| hsh["updated_at"] }.reverse
-            @combined = @combined.take(most_to_keep)
+			@closed_project_activity = @github.list_issues("OpenSourceMalaria/" + listname, {state: 'closed'})
+			@closed_project_activity = @closed_project_activity.take(most_to_keep)
 
-            @combined.each do |item|
-              leader_str = leader_str + ' ' + item["user"]["login"]
-              leader_str = leader_str + ' ' + item["user"]["login"]
-              if item["comments"] > 0
-                @comments = @github.issue_comments("OpenSourceMalaria/" + listname, item.number)
-                @comments.each do |comment|
-                  cdt = DateTime.parse (comment["updated_at"].to_s)
-                  odt = DateTime.parse (item["updated_at"].to_s)
-                  leader_str = leader_str + ' ' + comment["user"]["login"]
-                  if cdt-odt > 0
-                    item["updated_at"] = comment["updated_at"]
-                  end
-                end
-              end
-            end
-            if @total == nil
-              @total = @combined
-            else
-              @total = @total + @combined
-            end
-          rescue Exception => e
-          end
-        end
-      end
-    else
-      leader_str = "No_Data"
-      @total = nil
-    end
+			@combined = @open_project_activity + @closed_project_activity
+			@combined = @combined.sort_by { |hsh| hsh["updated_at"] }.reverse
+			@combined = @combined.take(most_to_keep)
+
+			@combined.each do |item|
+				leader_str = leader_str + ' ' + item["user"]["login"]
+				leader_str = leader_str + ' ' + item["user"]["login"]
+				if item["comments"] > 0
+					@comments = @github.issue_comments("OpenSourceMalaria/" + listname, item.number)
+					@comments.each do |comment|
+						cdt = DateTime.parse (comment["updated_at"].to_s)
+						odt = DateTime.parse (item["updated_at"].to_s)
+						leader_str = leader_str + ' ' + comment["user"]["login"]
+						if cdt-odt > 0
+							item["updated_at"] = comment["updated_at"]
+						end
+					end
+				end
+			end
+			if @total == nil
+				@total = @combined
+			else
+				@total = @total + @combined
+			end
+		end
+
     @leaders = leader_str.split.inject(Hash.new(0)) { |k,v| k[v] += 1; k}
     @leaders_array = @leaders.map { |k,v| { k => v} }
     @leaders_array.sort_by {|k,v| v}.reverse
@@ -384,7 +366,7 @@ get '/ostb/project_activity_with_leaders' do
     leader_str = ''
     if data_index > -1
       issue_list_names = @issues[data_index]
-      issue_list_names[:body].split(/\r\n/).each do |listname|
+      issue_list_names[:body].split(/\r?\n/).each do |listname|
         begin
           @open_project_activity = @github.list_issues("OpenSourceTB/" + listname, {state: 'open'})
           #@open_project_activity = @open_project_activity.take(most_to_keep)
